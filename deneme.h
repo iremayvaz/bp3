@@ -17,7 +17,8 @@
 
 #define AD_SOYAD_SIZE 30 // Birim adı, Çalışan adı ve soyadı için karakter sınırlaması
 #define CALISAN_BIRIM_SIZE  20 // Birim ve çalışan listeleri için eleman sınırlaması
-#define file_name "birimCalisanlar.txt" // Dosya adı
+#define calisan_file "calisanlar.txt" // Dosya adı
+#define birim_file "birimler.txt" // Dosya adı
 
 // YAPILAR (STRUCT)
 typedef struct {
@@ -36,18 +37,19 @@ typedef struct {
 
 // FONKSİYONLAR
 calisan *calisanOlustur(char *calisanAdi, char *calisanSoyadi, unsigned short int birimKodu, int maas, int girisYili);
-birim *birimOlustur(char *birimAdi, unsigned short int birimKodu, calisan **birimCalisanlar);
-calisan **calisaniEkle(calisan **calisanListesi, calisan *calisan);
-birim **birimiEkle(birim **birimListesi, birim *birim);
+birim *birimOlustur(char *birimAdi, unsigned short int birimKodu);
+void birimeCalisanEkle(birim *department, calisan *employee);
+void birimiEkle(birim **birimListesi, birim *birim);
+void calisanEkle(calisan **calisanListesi, calisan *newCalisan);
 void calisanBilgileriniYazdir(calisan *employee);
 void birimBilgileriniYazdir(birim *department);
 void dinamikBirimYazdir(birim **birimListesi);
 float birimMaasOrtHesapla(birim *department);
 void yuksekMaasliCalisanListele(birim *department, float ortalamaMaas);
 void enYuksekMaaslar(birim **birimListesi);
-calisan **maasiGuncelle(calisan **calisanListesi, int yeniMaas, int suankiYil);
+birim *maasiGuncelle(birim *birim, int yeniMaas, int suankiYil);
+void dosyayaYazdir(birim **birimListesi, const char* birimDosyasi, const char* calisanDosyasi);
 /*
-void dosyayaYazdir(birim **birimListesi, const char* dosya, int size);
 birim **dosyadanDiziyeAktar(birim **yeniBirimListesi, const char *dosya);
 */
 #endif // DENEME_H
