@@ -54,11 +54,11 @@ void birimeCalisanEkle(birim *department, calisan *employee){ // main'den birim 
 }
 
 // oluşturulan birimi "birimListesi"ne ekleme
-void birimiEkle(birim **birimListesi, birim *birim){ // main'den birimListesi dizisi referans alınır
+void birimiEkle(birim ***birimListesi, birim *birim){ // main'den birimListesi dizisi referans alınır
     for (size_t eleman = 0; eleman < CALISAN_BIRIM_SIZE; eleman++) // birim listesinde gez
     {
-        if(birimListesi[eleman] == NULL){ // boş yere 
-            birimListesi[eleman] = birim; // yeni birimi yerleştir
+        if((*birimListesi)[eleman] == NULL){ // boş yere 
+            (*birimListesi)[eleman] = birim; // yeni birimi yerleştir
             break; // döngüden çık
         }
     }
@@ -66,11 +66,11 @@ void birimiEkle(birim **birimListesi, birim *birim){ // main'den birimListesi di
 }
 
 // olusturulan calisani "calisanListesi"ne ekle
-void calisanEkle(calisan **calisanListesi, calisan *newCalisan){ // main'den calisanListesi dizisi referans alınır
+void calisanEkle(calisan ***calisanListesi, calisan *newCalisan){ // main'den calisanListesi dizisi referans alınır
     for (size_t eleman = 0; eleman < CALISAN_BIRIM_SIZE; eleman++) // calisan listesinde gez
         {
-            if(calisanListesi[eleman] == NULL){ // boş yere 
-                calisanListesi[eleman] = newCalisan; // yeni calisani yerleştir
+            if((*calisanListesi)[eleman] == NULL){ // boş yere 
+                (*calisanListesi)[eleman] = newCalisan; // yeni calisani yerleştir
                 break; // döngüden çık
             }
         }
@@ -112,20 +112,15 @@ void dinamikBirimYazdir(birim **birimListesi){
             break; // donguden cik
         }
         // varsa
-        printf("Birim Adi: %s\n", birimListesi[eleman]->birimAdi); 
-        printf("Birim Kodu: %u\n", birimListesi[eleman]->birimKodu);
-        printf("Calisanlar:\n"); // calisanlari listeleyecegiz
-
+        birimBilgileriniYazdir(birimListesi[eleman]);
+        
         for (size_t i = 0; i < CALISAN_BIRIM_SIZE; i++) // birimCalisanlarini geziyoruz
         {
             if(birimListesi[eleman]->birimCalisanlar[i] == 0){ // "birimCalisanlar"inda gosterilecek eleman yoksa
                 break; // donguden cik
             }
             // varsa
-            printf("\tCalisan %d adi: %s %s\n", i + 1, birimListesi[eleman]->birimCalisanlar[i]->calisanAdi,
-                                                 birimListesi[eleman]->birimCalisanlar[i]->calisanSoyadi);
-            printf("\tCalisan %d maas: %d\n", i + 1, birimListesi[eleman]->birimCalisanlar[i]->maas);
-            printf("\tCalisan %d giris yili: %d\n", i + 1, birimListesi[eleman]->birimCalisanlar[i]->girisYili);
+            calisanBilgileriniYazdir(birimListesi[eleman]->birimCalisanlar[i]);
         }
     }
 }
@@ -212,16 +207,11 @@ birim *maasiGuncelle(birim *birim, int yeniMaas, int suankiYil){
 }
 
 // Tüm Birim ve Calisan bilgilerini dosyaya yazdırma
-void dosyayaYazdir(birim **birimListesi, const char* birimDosyasi, const char* calisanDosyasi){
-    FILE *birimFile = fopen(birimDosyasi, "w"); // dosyaya yazma modu
-    FILE *calisanFile = fopen(calisanDosyasi, "w"); // dosyaya yazma modu
+void dosyayaYazdir(birim **birimListesi, const char* birim_calisanlar_dosyasi){
+    FILE *birimFile = fopen(birim_calisanlar_dosyasi, "w"); // dosyaya yazma modu
 
     if(birimFile == NULL){ // dosya bossa?
         printf("birim Dosya bulunamadı");
-        exit(EXIT_FAILURE);
-    }
-    if(calisanFile == NULL){ // dosya bossa?
-        printf("calisan Dosya bulunamadı");
         exit(EXIT_FAILURE);
     }
 
@@ -233,24 +223,24 @@ void dosyayaYazdir(birim **birimListesi, const char* birimDosyasi, const char* c
 
         fprintf(birimFile, "Birim Adi: %s\n", birimListesi[eleman]->birimAdi); // birim adı
         fprintf(birimFile, "Birim Kodu: %u\n", birimListesi[eleman]->birimKodu); // birim kodu
-
+        fprintf(birimFile, "Birim Calisanlar:\n");
         for (size_t calisanlarSize = 0; calisanlarSize < CALISAN_BIRIM_SIZE; calisanlarSize++) // birimin "birimCalisanlar"ini dolasiyoruz
         {
             if(birimListesi[eleman]->birimCalisanlar[calisanlarSize] == 0){ // yazdirilacak calisan kalmadiysa
                 break;
             }
 
-            fprintf(calisanFile, "Çalışan: %s %s\n", birimListesi[eleman]->birimCalisanlar[calisanlarSize]->calisanAdi, // birimdeki calisanin adi
-                                                birimListesi[eleman]->birimCalisanlar[calisanlarSize]->calisanSoyadi); // birimdeki calisanin soyadi
-            fprintf(calisanFile, "Maas: %d\n", birimListesi[eleman]->birimCalisanlar[calisanlarSize]->maas); // birimdeki calisanin maasi
-            fprintf(calisanFile, "Giris Yili: %d\n", birimListesi[eleman]->birimCalisanlar[calisanlarSize]->girisYili); // birimdeki calisanin giris yili
+            fprintf(birimFile, "\tÇalışan: %s %s\n", birimListesi[eleman]->birimCalisanlar[calisanlarSize]->calisanAdi, // birimdeki calisanin adi
+                                                                    birimListesi[eleman]->birimCalisanlar[calisanlarSize]->calisanSoyadi); // birimdeki calisanin soyadi
+            fprintf(birimFile, "\tMaas: %d\n", birimListesi[eleman]->birimCalisanlar[calisanlarSize]->maas); // birimdeki calisanin maasi
+            fprintf(birimFile, "\tGiris Yili: %d\n", birimListesi[eleman]->birimCalisanlar[calisanlarSize]->girisYili); // birimdeki calisanin giris yili
         }
     }
 }
-/*
+
 // Tüm Birim ve Calisan bilgilerini dosyadan diziye aktarma
-birim **dosyadanDiziyeAktar(birim **yeniBirimListesi, const char *dosya){
-    FILE *file = fopen(dosya, "r"); // dosyadan okuma modu
+birim **dosyadanDiziyeAktar(birim **yeniBirimListesi, const char *birim_calisanlar_dosyasi){
+    FILE *file = fopen(birim_calisanlar_dosyasi, "r"); // dosyadan okuma modu
 
     if(file == NULL){ // dosya bossa?
         printf("Dosya acilamadi");
@@ -261,9 +251,9 @@ birim **dosyadanDiziyeAktar(birim **yeniBirimListesi, const char *dosya){
     int birimSayisi = -1; // birim sayisi
     int calisanSayisi = 0; // calisan sayisi
 
-    while (fgets(satir, sizeof(satir), dosya)) // dosyadaki satirlari okuyoruz
+    while (fgets(satir, sizeof(satir), file)) // dosyadaki satirlari okuyoruz
     {
-        if (strncmp(satir, "Birim Adi:\t", 10) == 0) // birim adi
+        if (strncmp(satir, "Birim Adi: ", 10) == 0) // birim adi
         {
             birimSayisi++;
 
@@ -275,15 +265,15 @@ birim **dosyadanDiziyeAktar(birim **yeniBirimListesi, const char *dosya){
             yeniBirimListesi[birimSayisi]->birimCalisanlar = (calisan **)malloc(CALISAN_BIRIM_SIZE * sizeof(calisan*));
 
             // birim adini "yeniBirimListesi"ndeki birimin adina atama
-            sscanf(satir, "Birim Adi:\t%s", yeniBirimListesi[birimSayisi]->birimAdi); 
+            sscanf(satir, "Birim Adi: %s\n", yeniBirimListesi[birimSayisi]->birimAdi); 
             
         }
-        else if (strncmp(satir, "Birim Kodu:\t", 11) == 0) // birim kodu
+        else if (strncmp(satir, "Birim Kodu: ", 11) == 0) // birim kodu
         {
             // birim kodunu "yeniBirimListesi"ndeki birimin koduna atama
-            sscanf(satir, "Birim Kodu:\t%d", &yeniBirimListesi[birimSayisi]->birimKodu); 
+            sscanf(satir, "Birim Kodu: %u\n", yeniBirimListesi[birimSayisi]->birimKodu); 
         } 
-        else if (strncmp(satir, "Calisanlar:", 8) == 0) // birimin calisanlari
+        else if (strncmp(satir, "Birim Calisanlar:\n", 8) == 0) // birimin calisanlari
         {
             // Çalışan için bellek ayırma
             yeniBirimListesi[birimSayisi]->birimCalisanlar[calisanSayisi] = (calisan *)malloc(sizeof(calisan));
@@ -291,29 +281,30 @@ birim **dosyadanDiziyeAktar(birim **yeniBirimListesi, const char *dosya){
             yeniBirimListesi[birimSayisi]->birimCalisanlar[calisanSayisi]->calisanAdi = (char *)malloc(AD_SOYAD_SIZE * sizeof(char));
                 // birim listesindeki birimin calisanlarindaki calisanin soyadi icin bellek
             yeniBirimListesi[birimSayisi]->birimCalisanlar[calisanSayisi]->calisanSoyadi = (char *)malloc(AD_SOYAD_SIZE * sizeof(char));
-
+        } 
+        else if (strncmp(satir, "\tÇalışan:\n", 8) == 0) // birimin calisanlari
+        {
             // calisan adini "yeniBirimListesi"ndeki "birimCalisanlar"daki calisanin adina atama
             // calisan soyadini "yeniBirimListesi"ndeki "birimCalisanlar"daki calisanin soyadina atama
-            sscanf(satir, "Çalışan:\t%s    %s", yeniBirimListesi[birimSayisi]->birimCalisanlar[calisanSayisi]->calisanAdi, 
+            sscanf(satir, "\tÇalışan: %s %s\n", yeniBirimListesi[birimSayisi]->birimCalisanlar[calisanSayisi]->calisanAdi, 
                                                 yeniBirimListesi[birimSayisi]->birimCalisanlar[calisanSayisi]->calisanSoyadi); 
         } 
-        else if (strncmp(satir, "Maas:\t", 5) == 0) // calisanin maasi
+        else if (strncmp(satir, "\tMaas: ", 5) == 0) // calisanin maasi
         {
             // calisan maasini "yeniBirimListesi"ndeki "birimCalisanlar"daki calisanin maasina atama
-            sscanf(satir, "Maas:\t%d", &yeniBirimListesi[birimSayisi]->birimCalisanlar[calisanSayisi]->maas); 
+            sscanf(satir, "\tMaas: %d\n", yeniBirimListesi[birimSayisi]->birimCalisanlar[calisanSayisi]->maas); 
         } 
-        else if (strncmp(satir, "Giris Yili:\t", 10) == 0) // calisanin giris yili
+        else if (strncmp(satir, "\tGiris Yili: ", 10) == 0) // calisanin giris yili
         {
             // calisan giris yilini "yeniBirimListesi"ndeki "birimCalisanlar"daki calisanin giris yilina atama
-            sscanf(satir, "Giris Yili:\t%d", &yeniBirimListesi[birimSayisi]->birimCalisanlar[calisanSayisi]->girisYili); 
+            sscanf(satir, "\tGiris Yili: %d\n", yeniBirimListesi[birimSayisi]->birimCalisanlar[calisanSayisi]->girisYili); 
             calisanSayisi++; // Bir çalışanın tüm verilerini okuduktan sonra sayaç artırıyoruz
         }
         
     }
 
-    free(yeniBirimListesi); // ??
-    fclose(dosya);
+    //free(yeniBirimListesi); // ??
+    fclose(file);
 
     return yeniBirimListesi;
 }
-*/

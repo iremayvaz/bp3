@@ -1,64 +1,30 @@
-
 Birim Adi: Bilgisayar Muhendisligi
 Birim Kodu: 21221
-Calisanlar:
-Çalışan: İrem Ayvaz
-Maas: 20000
-Giris Yili: 2022
-Çalışan: Hatice Hande Dereli
-Maas: 25000
-Giris Yili: 2022
-Çalışan: Beyza Yilmaz
-Maas: 35000
-Giris Yili: 2022
-Çalışan: Erva Sara Ozdal
-Maas: 30000
-Giris Yili: 2022
-Çalışan: Mesut Ayvaz
-Maas: 100000
-Giris Yili: 1997
-
+Birim Calisanlar:
+	Çalışan: İrem Ayvaz
+	Maas: 20000
+	Giris Yili: 2022
+	Çalışan: Hatice Hande Dereli
+	Maas: 25000
+	Giris Yili: 2022
+	Çalışan: Beyza Yilmaz
+	Maas: 35000
+	Giris Yili: 2022
+	Çalışan: Erva Sara Ozdal
+	Maas: 30000
+	Giris Yili: 2022
+	Çalışan: Mesut Ayvaz
+	Maas: 70000
+	Giris Yili: 1997
 Birim Adi: İnsaat Muhendisligi
 Birim Kodu: 21312
-Calisanlar:
-Çalışan: Ebrar Birinci
-Maas: 40000
-Giris Yili: 2022
-Çalışan: Safak Kilic
-Maas: 45000
-Giris Yili: 2022
-Çalışan: Sude Dogan
-Maas: 35000
-Giris Yili: 2022
-
-Birim Adi: Bilgisayar Muhendisligi
-Birim Kodu: 21221
-Calisanlar:
-Çalışan: İrem Ayvaz
-Maas: 20000
-Giris Yili: 2022
-Çalışan: Hatice Hande Dereli
-Maas: 25000
-Giris Yili: 2022
-Çalışan: Beyza Yilmaz
-Maas: 35000
-Giris Yili: 2022
-Çalışan: Erva Sara Ozdal
-Maas: 30000
-Giris Yili: 2022
-Çalışan: Mesut Ayvaz
-Maas: 100000
-Giris Yili: 1997
-
-Birim Adi: İnsaat Muhendisligi
-Birim Kodu: 21312
-Calisanlar:
-Çalışan: Ebrar Birinci
-Maas: 40000
-Giris Yili: 2022
-Çalışan: Safak Kilic
-Maas: 45000
-Giris Yili: 2022
-Çalışan: Sude Dogan
-Maas: 35000
-Giris Yili: 2022
+Birim Calisanlar:
+	Çalışan: Ebrar Birinci
+	Maas: 40000
+	Giris Yili: 2022
+	Çalışan: Safak Kilic
+	Maas: 45000
+	Giris Yili: 2022
+	Çalışan: Sude Dogan
+	Maas: 35000
+	Giris Yili: 2022

@@ -27,18 +27,8 @@ int main(){
     birimeCalisanEkle(birim1, calisan3); // calisan3'ü birim1'e ekliyoruz
     birimeCalisanEkle(birim1, calisan4); // calisan4'ü birim1'e ekliyoruz
 
-    birimBilgileriniYazdir(birim1); // birim bilgilerini yazdiriyoruz.
-
-    printf("\n"); // satir atla
-
     calisan *calisan8 = calisanOlustur("Mesut", "Ayvaz", 61287, 70000, 1997); // "calisan8" adinda yeni calisan olusturuyoruz
     birimeCalisanEkle(birim1, calisan8); // calisan4'ü birim1'e ekliyoruz
-
-    birimBilgileriniYazdir(birim1);
-
-    birim1 = maasiGuncelle(birim1, 100000, 2024);
-
-    birimBilgileriniYazdir(birim1);
 
     calisan *calisan5 = calisanOlustur("Ebrar", "Birinci", 21312, 40000, 2022); // "calisan1" adinda yeni calisan olusturuyoruz
     calisan *calisan6 = calisanOlustur("Safak", "Kilic", 21312, 45000, 2022); // "calisan2" adinda yeni calisan olusturuyoruz
@@ -49,19 +39,17 @@ int main(){
     birimeCalisanEkle(birim2, calisan6);
     birimeCalisanEkle(birim2, calisan7);
 
-    birimBilgileriniYazdir(birim2); // birim bilgilerini yazdiriyoruz.
-
-    printf("\n"); // satir atla
-
     birimiEkle(birimListesi, birim1);
     birimiEkle(birimListesi, birim2);
 
-    printf("\n"); // satir atla
-
-    dinamikBirimYazdir(birimListesi);
+    //dinamikBirimYazdir(birimListesi);
     
-    printf("\n"); // satir atla
+    dosyayaYazdir(birimListesi, file_name);
 
-    dosyayaYazdir(birimListesi, birim_file, calisan_file);
+    birim **yeniBirim = (birim **)calloc(CALISAN_BIRIM_SIZE, sizeof(birim*));
+
+    yeniBirim = dosyadanDiziyeAktar(yeniBirim, file_name);
+
+    dinamikBirimYazdir(yeniBirim);
     return 0;
 }
