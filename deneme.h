@@ -42,7 +42,7 @@ calisan *calisanOlustur(char *calisanAdi, char *calisanSoyadi, unsigned short in
 birim *birimOlustur(char *birimAdi, unsigned short int birimKodu);
 void birimeCalisanEkle(birim *department, calisan *employee);
 void birimiEkle(birim ***birimListesi, birim *birim);
-void calisanEkle(calisan **calisanListesi, calisan *newCalisan);
+void calisanEkle(calisan ***calisanListesi, calisan *newCalisan);
 void calisanBilgileriniYazdir(calisan *employee);
 void birimBilgileriniYazdir(birim *department);
 void dinamikBirimYazdir(birim **birimListesi);

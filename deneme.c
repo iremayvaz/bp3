@@ -32,7 +32,14 @@ calisan *calisanOlustur(char *calisanAdi, char *calisanSoyadi, unsigned short in
 birim *birimOlustur(char *birimAdi, unsigned short int birimKodu){ 
     birim *yeniBirim = (birim *)malloc(sizeof(birim)); // yeniBirim icin bellek tahsisi
 
-    yeniBirim->birimAdi = (char *)malloc((strlen(birimAdi) + 1) * sizeof(char)); // birim adi icin bellek tahsisi
+    if(yeniBirim->birimAdi == NULL){
+        yeniBirim->birimAdi = (char *)malloc((strlen(birimAdi) + 1) * sizeof(char)); // birim adi icin bellek tahsisi
+    } 
+    else
+    {
+        yeniBirim->birimAdi = birimAdi;
+    }
+
     yeniBirim->birimCalisanlar = (calisan**) calloc(CALISAN_BIRIM_SIZE, sizeof(calisan *)); // birim calisanlari icin bellek tahsisi
 
     strcpy(yeniBirim->birimAdi, birimAdi); // birim adını ekle
@@ -54,7 +61,7 @@ void birimeCalisanEkle(birim *department, calisan *employee){ // main'den birim 
 }
 
 // oluşturulan birimi "yeniBirimListesi"ne ekleme
-void birimiEkle(birim ***yeniBirimListesi, birim *birim){ // main'den yeniBirimListesi dizisi referans alınır
+void birimiEkle(birim ***yeniBirimListesi, birim *birim){ // main'den dizi referans alınır
     for (size_t b = 0; b < CALISAN_BIRIM_SIZE; b++) // birim listesinde gez
     {
         if((*yeniBirimListesi)[b] == NULL){ // boş yere 
@@ -66,11 +73,11 @@ void birimiEkle(birim ***yeniBirimListesi, birim *birim){ // main'den yeniBirimL
 }
 
 // olusturulan calisani "calisanListesi"ne ekle
-void calisanEkle(calisan **calisanListesi, calisan *newCalisan){ // main'den calisanListesi dizisi referans alınır
+void calisanEkle(calisan ***calisanListesi, calisan *newCalisan){ // main'den dizi referans alınır
     for (size_t b = 0; b < CALISAN_BIRIM_SIZE; b++) // calisan listesinde gez
         {
-            if(calisanListesi[b] == NULL){ // boş yere 
-                calisanListesi[b] = newCalisan; // yeni calisani yerleştir
+            if((*calisanListesi[b]) == NULL){ // boş yere 
+                (*calisanListesi[b]) = newCalisan; // yeni calisani yerleştir
                 break; // döngüden çık
             }
         }
@@ -240,16 +247,11 @@ birim*** dosyadanDiziyeAktar(const char *birim_calisanlar_dosyasi, birim ***yeni
     int birimSayisi = -1; // birim sayisi
     int calisanSayisi = 0; // calisan sayisi
 
-    char yeniCalisanAdi[AD_SOYAD_SIZE];
-    char yeniCalisanSoyadi[AD_SOYAD_SIZE];
-    int yeniMaas;
-    int yeniGirisYili;
-
     birim *tempDept = NULL;
 
     while (fgets(satir, SATIR, file)) // dosyadaki satirlari okuyoruz
     {
-        char yeniBirimAdi[AD_SOYAD_SIZE];
+        char *yeniBirimAdi = (char *)calloc(AD_SOYAD_SIZE, sizeof(char)); // 30 birimlik bellek ayırıldı
         unsigned short int yeniBirimKodu;
         
         if (sscanf(satir, "%[^,], %u", yeniBirimAdi, &yeniBirimKodu) == 2) // birim adi
@@ -257,6 +259,16 @@ birim*** dosyadanDiziyeAktar(const char *birim_calisanlar_dosyasi, birim ***yeni
             printf("Birim satiri okundu\n");
             tempDept = NULL;
             calisanSayisi = 0;
+
+            int length = 0; // birimAdi uzunlugu
+            for (size_t i = 0; i < AD_SOYAD_SIZE; i++)
+            {
+                if(yeniBirimAdi[i] == 0){
+                    break;
+                }
+                length++;
+            }
+            yeniBirimAdi = realloc(yeniBirimAdi, length * sizeof(char));
 
             birim *newDept = birimOlustur(yeniBirimAdi, yeniBirimKodu);
             if(newDept == NULL){
@@ -291,7 +303,10 @@ calisan **calisaniDiziyeAktar(const char* dosyaAdi){
     }
     else
     {
-
+        char yeniCalisanAdi[AD_SOYAD_SIZE];
+    char yeniCalisanSoyadi[AD_SOYAD_SIZE];
+    int yeniMaas;
+    int yeniGirisYili;
     }
 }
 */
