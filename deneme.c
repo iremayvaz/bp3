@@ -54,11 +54,11 @@ void birimeCalisanEkle(birim *department, calisan *employee){ // main'den birim 
 }
 
 // oluşturulan birimi "yeniBirimListesi"ne ekleme
-void birimiEkle(birim **yeniBirimListesi, birim *birim){ // main'den yeniBirimListesi dizisi referans alınır
+void birimiEkle(birim ***yeniBirimListesi, birim *birim){ // main'den yeniBirimListesi dizisi referans alınır
     for (size_t b = 0; b < CALISAN_BIRIM_SIZE; b++) // birim listesinde gez
     {
-        if(yeniBirimListesi[b] == NULL){ // boş yere 
-            yeniBirimListesi[b] = birim; // yeni birimi yerleştir
+        if((*yeniBirimListesi)[b] == NULL){ // boş yere 
+            (*yeniBirimListesi)[b] = birim; // yeni birimi yerleştir
             break; // döngüden çık
         }
     }
@@ -223,7 +223,7 @@ void dosyayaYazdir(birim **yeniBirimListesi, const char *calisanlar_dosyasi, con
 }
 
 // Tüm Birim ve Calisan bilgilerini dosyadan diziye aktarma
-birim** dosyadanDiziyeAktar(const char *birim_calisanlar_dosyasi, birim **yeniBirimListesi){
+birim*** dosyadanDiziyeAktar(const char *birim_calisanlar_dosyasi, birim ***yeniBirimListesi){
     FILE *file = fopen(birim_calisanlar_dosyasi, "r"); // dosyadan okuma modu
     
     if(file == NULL){ // dosya bossa?
@@ -231,7 +231,7 @@ birim** dosyadanDiziyeAktar(const char *birim_calisanlar_dosyasi, birim **yeniBi
         exit(EXIT_FAILURE);
     }
 
-    if(yeniBirimListesi == NULL){ // dosya bossa?
+    if((*yeniBirimListesi) == NULL){ // dosya bossa?
         printf("Bellek acilamadi");
         exit(EXIT_FAILURE);
     }
@@ -252,7 +252,7 @@ birim** dosyadanDiziyeAktar(const char *birim_calisanlar_dosyasi, birim **yeniBi
         char yeniBirimAdi[AD_SOYAD_SIZE];
         unsigned short int yeniBirimKodu;
         
-        if (sscanf(satir, "%s, %u\n", yeniBirimAdi, &yeniBirimKodu) == 2) // birim adi
+        if (sscanf(satir, "%[^,], %u", yeniBirimAdi, &yeniBirimKodu) == 2) // birim adi
         {
             printf("Birim satiri okundu\n");
             tempDept = NULL;
@@ -263,7 +263,7 @@ birim** dosyadanDiziyeAktar(const char *birim_calisanlar_dosyasi, birim **yeniBi
                 printf("bellek acilamadi");
                 break;
             }
-            birimBilgileriniYazdir(newDept);
+            //birimBilgileriniYazdir(newDept);
             birimSayisi++;
 
             tempDept = newDept;

@@ -41,7 +41,7 @@ typedef struct {
 calisan *calisanOlustur(char *calisanAdi, char *calisanSoyadi, unsigned short int birimKodu, int maas, int girisYili);
 birim *birimOlustur(char *birimAdi, unsigned short int birimKodu);
 void birimeCalisanEkle(birim *department, calisan *employee);
-void birimiEkle(birim **birimListesi, birim *birim);
+void birimiEkle(birim ***birimListesi, birim *birim);
 void calisanEkle(calisan **calisanListesi, calisan *newCalisan);
 void calisanBilgileriniYazdir(calisan *employee);
 void birimBilgileriniYazdir(birim *department);
@@ -52,7 +52,7 @@ void enYuksekMaaslar(birim **birimListesi);
 void maasiGuncelle(birim *birim, int yeniMaas, int suankiYil);
 void dosyayaYazdir(birim **yeniBirimListesi, const char *calisanlar_dosyasi, const char* birimler_dosyasi);
 
-birim** dosyadanDiziyeAktar(const char *birim_calisanlar_dosyasi, birim **yeniBirimListesi);
+birim*** dosyadanDiziyeAktar(const char *birim_calisanlar_dosyasi, birim ***yeniBirimListesi);
 //calisan **calisaniDiziyeAktar(const char *dosyaAdi);
 
 #endif // DENEME_H
