@@ -17,9 +17,10 @@
 
 #define AD_SOYAD_SIZE 30 // Birim adı, Çalışan adı ve soyadı için karakter sınırlaması
 #define CALISAN_BIRIM_SIZE  20 // Birim ve çalışan listeleri için eleman sınırlaması
-#define calisan_file "calisanlar.txt" // Dosya adı
-#define birim_file "birimler.txt" // Dosya adı
-#define file_name "birimCalisanlar.txt"
+#define SATIR 256
+
+#define calisan_file "calisanlar.txt"
+#define birim_file "birimler.txt"
 
 // YAPILAR (STRUCT)
 typedef struct {
@@ -48,8 +49,10 @@ void dinamikBirimYazdir(birim **birimListesi);
 float birimMaasOrtHesapla(birim *department);
 void yuksekMaasliCalisanListele(birim *department, float ortalamaMaas);
 void enYuksekMaaslar(birim **birimListesi);
-birim *maasiGuncelle(birim *birim, int yeniMaas, int suankiYil);
-void dosyayaYazdir(birim **birimListesi, const char* birim_calisanlar_dosyasi);
-birim **dosyadanDiziyeAktar(birim **yeniBirimListesi, const char *birim_calisanlar_dosyasi);
+void maasiGuncelle(birim *birim, int yeniMaas, int suankiYil);
+void dosyayaYazdir(birim **yeniBirimListesi, const char *calisanlar_dosyasi, const char* birimler_dosyasi);
+
+birim** dosyadanDiziyeAktar(const char *birim_calisanlar_dosyasi, birim **yeniBirimListesi);
+//calisan **calisaniDiziyeAktar(const char *dosyaAdi);
 
 #endif // DENEME_H

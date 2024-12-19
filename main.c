@@ -44,12 +44,15 @@ int main(){
 
     //dinamikBirimYazdir(birimListesi);
     
-    dosyayaYazdir(birimListesi, file_name);
+    //dosyayaYazdir(birimListesi, file_name);
+    //dinamikBirimYazdir(birimListesi);
+    //maasiGuncelle(birim1, 99999, 2024);
 
-    birim **yeniBirim = (birim **)calloc(CALISAN_BIRIM_SIZE, sizeof(birim*));
+    dosyayaYazdir(birimListesi, calisan_file, birim_file);
 
-    yeniBirim = dosyadanDiziyeAktar(yeniBirim, file_name);
+    dosyadanDiziyeAktar(birim_file, birimListesi);
 
-    dinamikBirimYazdir(yeniBirim);
+    dinamikBirimYazdir(birimListesi);
+
     return 0;
 }

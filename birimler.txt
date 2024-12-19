@@ -1,4 +1,2 @@
-Birim Adi: Bilgisayar Muhendisligi
-Birim Kodu: 21221
-Birim Adi: İnsaat Muhendisligi
-Birim Kodu: 21312
+Bilgisayar Muhendisligi, 21221
+İnsaat Muhendisligi, 21312
