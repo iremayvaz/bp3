@@ -85,8 +85,8 @@ void birimiEkle(birim ***yeniBirimListesi, birim *birim){ // main'den dizi refer
 void calisaniEkle(calisan ***calisanListesi, calisan *newCalisan){ // main'den dizi referans alınır
     for (size_t c = 0; c < CALISAN_BIRIM_SIZE; c++) // calisan listesinde gez
         {
-            if((*calisanListesi[c]) == NULL){ // boş yere 
-                (*calisanListesi[c])= newCalisan; // yeni calisani yerleştir
+            if((*calisanListesi)[c] == NULL){ // boş yere 
+                (*calisanListesi)[c] = newCalisan; // yeni calisani yerleştir
                 break; // döngüden çık
             }
         }
