@@ -42,7 +42,7 @@ calisan *calisanOlustur(char *calisanAdi, char *calisanSoyadi, unsigned short in
 birim *birimOlustur(char *birimAdi, unsigned short int birimKodu);
 void birimeCalisanEkle(birim *department, calisan *employee);
 void birimiEkle(birim ***birimListesi, birim *birim);
-void calisanEkle(calisan ***calisanListesi, calisan *newCalisan);
+void calisaniEkle(calisan ***calisanListesi, calisan *newCalisan);
 void calisanBilgileriniYazdir(calisan *employee);
 void birimBilgileriniYazdir(birim *department);
 void dinamikBirimYazdir(birim **birimListesi);
@@ -51,8 +51,7 @@ void yuksekMaasliCalisanListele(birim *department, float ortalamaMaas);
 void enYuksekMaaslar(birim **birimListesi);
 void maasiGuncelle(birim *birim, int yeniMaas, int suankiYil);
 void dosyayaYazdir(birim **yeniBirimListesi, const char *calisanlar_dosyasi, const char* birimler_dosyasi);
-
-birim*** dosyadanDiziyeAktar(const char *birim_calisanlar_dosyasi, birim ***yeniBirimListesi);
-//calisan **calisaniDiziyeAktar(const char *dosyaAdi);
+birim ***birimiDosyadanDiziyeAktar(const char *birim_calisanlar_dosyasi, birim ***yeniBirimListesi);
+calisan ***calisaniDosyadanDiziyeAktar(const char *dosyaAdi, calisan ***yeniCalisanListesi, birim ***yeniBirimListesi);
 
 #endif // DENEME_H

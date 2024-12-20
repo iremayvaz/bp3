@@ -51,10 +51,11 @@ int main(){
     //dosyayaYazdir(birimListesi, calisan_file, birim_file);
 
     birim **yeniBirimListesi = (birim **)calloc(CALISAN_BIRIM_SIZE, sizeof(birim*));
+    calisan **yeniCalisanListesi = (calisan **)calloc(CALISAN_BIRIM_SIZE, sizeof(calisan *));
 
-    dosyadanDiziyeAktar(birim_file, &yeniBirimListesi);
+    birimiDosyadanDiziyeAktar(birim_file, &yeniBirimListesi);
+    calisaniDosyadanDiziyeAktar(calisan_file, &yeniCalisanListesi, &yeniBirimListesi);
 
     dinamikBirimYazdir(yeniBirimListesi);
-
     return 0;
 }
