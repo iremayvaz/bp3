@@ -56,6 +56,15 @@ int main(){
     birimiDosyadanDiziyeAktar(birim_file, &yeniBirimListesi);
     calisaniDosyadanDiziyeAktar(calisan_file, &yeniCalisanListesi, &yeniBirimListesi);
 
+    for (size_t b = 0; b < CALISAN_BIRIM_SIZE; b++) // yeniBirimListesini gez
+    {
+        if(yeniCalisanListesi[b] == 0){ // yazdirilacak birim yoksa
+            break; // donguden cik
+        }
+        // varsa
+        calisanBilgileriniYazdir(yeniCalisanListesi[b]);
+    }
+
     dinamikBirimYazdir(yeniBirimListesi);
     return 0;
 }
