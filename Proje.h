@@ -1,6 +1,6 @@
 /*
-* @file
-* @description      
+* @file             Proje.h
+* @description      Oluşturulan Proje.c dosyasını kütüphane formuna dönüştürme
 * @assignment       1
 * @date             11.12.2024
 * @author           İrem AYVAZ  irem.ayvaz@stu.fsm.edu.tr

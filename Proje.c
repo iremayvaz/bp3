@@ -1,6 +1,16 @@
-/*
-* @file
-* @description      
+/*  
+* @file             Proje.c
+* @description      Yeni çalışan ve birim oluşturulur.
+                    Oluşturulan çalışan ilgili birime eklenir.
+                    Oluşturulan çalışanlar ve birimler tüm çalışanların ve birimlerin tutulduğu dizilere eklenir.
+                    Oluşturulan çalışanın, birimin ve birim listelerinin bilgileri yazdırılır.
+                    İlgili birimin maaş ortalaması hesaplanır.
+                    İlgili birimin ortalama maaşından yüksek maaş alan çalışanlarının bilgileri yazdırılır.
+                    Tüm birimlerdeki birimin en yüksek maaşını alan çalışan bilgileri yazdırılır.
+                    İlgili birimdeki çalışanlardan 10 yıldan fazladır çalışıp alınan parametreden düşük maaş alanların maaşlarını güncelleme
+                    Tüm birim ve çalışan bilgilerini birimler ve çalışanlar dosyasına yazdırma
+                    Tüm birim bilgilerini dosyadan diziye aktarma
+                    Tüm çalışan bilgilerini ilgili birime aktarma ve dosyadan diziye aktarma
 * @assignment       1
 * @date             11.12.2024
 * @author           İrem AYVAZ  irem.ayvaz@stu.fsm.edu.tr
@@ -10,7 +20,7 @@
 #include <float.h>
 #include <string.h>
 #include <stdlib.h>
-#include "deneme.h" // kendi yazdığım kütüphane   %[^\n]
+#include "Proje.h" // kendi yazdığım kütüphane   %[^\n]
 
 // ilgili değerlerle calisan struct döndüren fonksiyon
 calisan *calisanOlustur(char *calisanAdi, char *calisanSoyadi, unsigned short int birimKodu, int maas, int girisYili){ 
@@ -254,7 +264,7 @@ birim*** birimiDosyadanDiziyeAktar(const char *birimDosyasi, birim ***yeniBirimL
     
     char satir[SATIR]; // Her satırı okumak için buffer
 
-    while (fgets(satir, SATIR, birimFile)) // dosyadaki satirlari okuyoruz
+    while (fgets(satir, SATIR, birimFile)) // birim dosyasındaki satirlari okuyoruz
     {
         char *yeniBirimAdi = (char *)calloc(AD_SOYAD_SIZE, sizeof(char)); // 30 birimlik bellek ayırıldı
         unsigned short int yeniBirimKodu;

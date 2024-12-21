@@ -1,5 +1,5 @@
 /*
-* @file
+* @file             Main.c
 * @description      
 * @assignment       1
 * @date             11.12.2024
@@ -10,9 +10,9 @@
 #include <float.h>
 #include <string.h>
 #include <stdlib.h>
-#include "deneme.h" // kendi yazdığım kütüphane
+#include "Proje.h" // kendi yazdığım kütüphane
 
-int main(){
+int main(int argc, char *argv[]){
     // calisan **calisanListesi = (calisan **)calloc(CALISAN_BIRIM_SIZE, sizeof(calisan *)); // tüm calisanlar
     // birim **birimListesi = (birim **)calloc(CALISAN_BIRIM_SIZE, sizeof(birim *)); // tüm birimler
 
@@ -50,21 +50,26 @@ int main(){
 
     //dosyayaYazdir(birimListesi, calisan_file, birim_file);
 
-    birim **yeniBirimListesi = (birim **)calloc(CALISAN_BIRIM_SIZE, sizeof(birim*));
-    calisan **yeniCalisanListesi = (calisan **)calloc(CALISAN_BIRIM_SIZE, sizeof(calisan *));
-
-    birimiDosyadanDiziyeAktar(birim_file, &yeniBirimListesi);
-    calisaniDosyadanDiziyeAktar(calisan_file, &yeniCalisanListesi, &yeniBirimListesi);
-
-    for (size_t b = 0; b < CALISAN_BIRIM_SIZE; b++) // yeniBirimListesini gez
-    {
-        if(yeniCalisanListesi[b] == 0){ // yazdirilacak birim yoksa
-            break; // donguden cik
-        }
-        // varsa
-        calisanBilgileriniYazdir(yeniCalisanListesi[b]);
+    printf("Gönderilen parametreler:\n");
+    for (int i = 1; i < argc; i++) { // command line parameter
+        printf("  %s\n", argv[i]);
     }
 
-    dinamikBirimYazdir(yeniBirimListesi);
+    // birim **yeniBirimListesi = (birim **)calloc(CALISAN_BIRIM_SIZE, sizeof(birim*));
+    // calisan **yeniCalisanListesi = (calisan **)calloc(CALISAN_BIRIM_SIZE, sizeof(calisan *));
+
+    // birimiDosyadanDiziyeAktar(birim_file, &yeniBirimListesi);
+    // calisaniDosyadanDiziyeAktar(calisan_file, &yeniCalisanListesi, &yeniBirimListesi);
+
+    // for (size_t b = 0; b < CALISAN_BIRIM_SIZE; b++) // yeniBirimListesini gez
+    // {
+    //     if(yeniCalisanListesi[b] == 0){ // yazdirilacak birim yoksa
+    //         break; // donguden cik
+    //     }
+    //     // varsa
+    //     calisanBilgileriniYazdir(yeniCalisanListesi[b]);
+    // }
+
+    // dinamikBirimYazdir(yeniBirimListesi);
     return 0;
 }
