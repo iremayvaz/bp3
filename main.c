@@ -13,7 +13,7 @@
 #include "Proje.h" // kendi yazdığım kütüphane
 
 int main(int argc, char *argv[]){
-    
+    /*
     calisan **calisanListesi = (calisan **)calloc(CALISAN_BIRIM_SIZE, sizeof(calisan *)); // tüm calisanlar
     birim **birimListesi = (birim **)calloc(CALISAN_BIRIM_SIZE, sizeof(birim *)); // tüm birimler
 
@@ -28,7 +28,7 @@ int main(int argc, char *argv[]){
     birimeCalisanEkle(birim1, calisan3); // calisan3'ü birim1'e ekliyoruz
     birimeCalisanEkle(birim1, calisan4); // calisan4'ü birim1'e ekliyoruz
 
-    calisan *calisan8 = calisanOlustur("Mesut", "Ayvaz", 61287, 70000, 1997); // "calisan8" adinda yeni calisan olusturuyoruz
+    calisan *calisan8 = calisanOlustur("Mesut", "Ayvaz", 21221, 70000, 1997); // "calisan8" adinda yeni calisan olusturuyoruz
     birimeCalisanEkle(birim1, calisan8); // calisan4'ü birim1'e ekliyoruz
 
     calisan *calisan5 = calisanOlustur("Ebrar", "Birinci", 21312, 40000, 2022); // "calisan1" adinda yeni calisan olusturuyoruz
@@ -62,7 +62,7 @@ int main(int argc, char *argv[]){
     printf("Gönderilen parametreler:\n");
     for (int i = 1; i < argc; i++) { // command line parameter
         printf("  %s\n", argv[i]);
-    }
+    }*/
 
     birim **yeniBirimListesi = (birim **)calloc(CALISAN_BIRIM_SIZE, sizeof(birim*));
     calisan **yeniCalisanListesi = (calisan **)calloc(CALISAN_BIRIM_SIZE, sizeof(calisan *));
@@ -86,9 +86,10 @@ int main(int argc, char *argv[]){
         calisanBilgileriniYazdir(yeniCalisanListesi[b]);
     }*/
 
-    maasiGuncelle(birim1, 99999, 2024);
+    //maasiGuncelle(birim1, 99999, 2024);
 
-    dosyayaYaz(argc, argv, birimListesi, calisanListesi);
-    
+    //dosyayaYaz(argc, argv, birimListesi, calisanListesi);
+
+    freeAll(yeniBirimListesi, yeniCalisanListesi);
     return 0;
 }

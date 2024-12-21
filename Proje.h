@@ -49,5 +49,6 @@ void enYuksekMaaslar(birim **birimListesi);
 void maasiGuncelle(birim *birim, int yeniMaas, int suankiYil);
 void dosyayaYaz(int argc, char *argv[], birim **birimListesi, calisan **calisanListesi);
 void diziyeAktar(int argc, char *argv[], birim ***yeniBirimListesi, calisan ***yeniCalisanListesi);
+void freeAll(birim **departments, calisan **employees);
 
 #endif // DENEME_H
