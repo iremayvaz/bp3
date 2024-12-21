@@ -214,62 +214,69 @@ void maasiGuncelle(birim *birim, int yeniMaas, int suankiYil){
 }
 
 // Tüm Birim ve Calisan bilgilerini dosyaya yazdırma
-void dosyayaYazdir(birim **yeniBirimListesi, const char *calisanlar_dosyasi, const char* birimler_dosyasi){
-    FILE *calisanlar = fopen(calisanlar_dosyasi, "w"); // dosyaya yazma modu
-    FILE *birimler = fopen(birimler_dosyasi, "w");
+void dosyayaYaz(int argc, char *argv[], birim **birimListesi, calisan **calisanListesi){
+    // dosyaya yazdirma modu
+    FILE *birim = fopen(argv[1], "w");
+    FILE *calisan = fopen(argv[2], "w");
 
-    if (calisanlar == NULL || birimler == NULL)
+    if (calisan == NULL || birim == NULL)
     { // dosya bossa?
         printf("birim Dosya bulunamadı");
         exit(EXIT_FAILURE);
     }
 
-    for (size_t b = 0; b < CALISAN_BIRIM_SIZE; b++) // "yeniBirimListesi"ni dolaşıyoruz
+    // BIRIMLER
+    for (size_t b = 0; b < CALISAN_BIRIM_SIZE; b++) // "birimListesi"ni dolaşıyoruz
     {
-        if(yeniBirimListesi[b] == 0){ // yazdirilicak birim kalmadiysa
+        if(birimListesi[b] == 0){ // yazdirilicak birim kalmadiysa
             break;
         }
 
-        fprintf(birimler, "%s, %u\n", yeniBirimListesi[b]->birimAdi,   // birim adi
-                                      yeniBirimListesi[b]->birimKodu); // birim kodu
-    
-        for (size_t c = 0; c < CALISAN_BIRIM_SIZE; c++) // birimin "birimCalisanlar"ini dolasiyoruz
-        {
-            if(yeniBirimListesi[b]->birimCalisanlar[c] == 0){ // yazdirilacak calisan kalmadiysa
-                break;
-            }
-
-            fprintf(calisanlar, "%s, %s, %u, %d, %d\n", yeniBirimListesi[b]->birimCalisanlar[c]->calisanAdi, // birimdeki calisanin adi
-                                                        yeniBirimListesi[b]->birimCalisanlar[c]->calisanSoyadi, // birimdeki calisanin soyadi
-                                                        yeniBirimListesi[b]->birimCalisanlar[c]->birimKodu, // birimdeki calisanin birim kodu
-                                                        yeniBirimListesi[b]->birimCalisanlar[c]->maas, // birimdeki calisanin maasi
-                                                        yeniBirimListesi[b]->birimCalisanlar[c]->girisYili); // birimdeki calisanin giris yili
-        }
+        fprintf(birim, "%s, %u\n", birimListesi[b]->birimAdi,   // birim adi
+                                   birimListesi[b]->birimKodu); // birim kodu
     }
-}
 
-// Tüm Birim bilgilerini dosyadan diziye aktarma
-birim*** birimiDosyadanDiziyeAktar(const char *birimDosyasi, birim ***yeniBirimListesi){
-    FILE *birimFile = fopen(birimDosyasi, "r"); // dosyadan okuma modu
+    // CALISANLAR
+    for (size_t c = 0; c < CALISAN_BIRIM_SIZE; c++) // "calisanListesi"ni dolasiyoruz
+    {
+        if(calisanListesi[c] == 0){ // yazdirilacak calisan kalmadiysa
+            break;
+        }
+
+        fprintf(calisan, "%s, %s, %u, %d, %d\n", calisanListesi[c]->calisanAdi, // calisanin adi
+                                                 calisanListesi[c]->calisanSoyadi, // calisanin soyadi
+                                                 calisanListesi[c]->birimKodu, // calisanin birim kodu
+                                                 calisanListesi[c]->maas, // calisanin maasi
+                                                 calisanListesi[c]->girisYili); // calisanin giris yili
+    }
     
-    if(birimFile == NULL){ // dosya bossa?
+}
+// Tüm Birim ve Calisan bilgilerini dosyadan diziye aktarma
+void diziyeAktar(int argc, char *argv[], birim ***yeniBirimListesi, calisan ***yeniCalisanListesi){
+    // dosyadan okuma modu
+    FILE *birimler = fopen(argv[1], "r");
+    FILE *calisanlar = fopen(argv[2], "r");
+
+    if (birimler == NULL || calisanlar == NULL)
+    { // dosya bossa?
         printf("Dosya acilamadi");
         exit(EXIT_FAILURE);
     }
 
-    if((*yeniBirimListesi) == NULL){ // liste bossa?
+    if((*yeniBirimListesi) == NULL || (*yeniCalisanListesi) == NULL){ // liste bossa?
         printf("Bellek acilamadi");
         exit(EXIT_FAILURE);
     }
-    
-    char satir[SATIR]; // Her satırı okumak için buffer
 
-    while (fgets(satir, SATIR, birimFile)) // birim dosyasındaki satirlari okuyoruz
+    // BIRIMLER
+    char birimSatiri[SATIR]; // Her satırı okumak için buffer
+
+    while (fgets(birimSatiri, SATIR, birimler)) // birim dosyasındaki satirlari okuyoruz
     {
         char *yeniBirimAdi = (char *)calloc(AD_SOYAD_SIZE, sizeof(char)); // 30 birimlik bellek ayırıldı
         unsigned short int yeniBirimKodu;
         
-        if (sscanf(satir, "%[^,], %u", yeniBirimAdi, &yeniBirimKodu) == 2) // birim adi
+        if (sscanf(birimSatiri, "%[^,], %u", yeniBirimAdi, &yeniBirimKodu) == 2) // birim adi
         {
             printf("Birim satiri okundu\n");
 
@@ -295,7 +302,7 @@ birim*** birimiDosyadanDiziyeAktar(const char *birimDosyasi, birim ***yeniBirimL
             birim *newDept = birimOlustur(yeniBirimAdi, yeniBirimKodu);
 
             if(newDept == NULL){ // newDept olusturulabildi mi?
-                printf("bellek acilamadi");
+                printf("yeni birim icin bellek acilamadi");
                 break;
             }
 
@@ -303,32 +310,14 @@ birim*** birimiDosyadanDiziyeAktar(const char *birimDosyasi, birim ***yeniBirimL
         }
         else // dosyadaki satir okunamadi
         {
-            printf("Satir okunamadi");
+            printf("Birim satiri okunamadi");
         }
     }
 
-    fclose(birimFile); // dosyayi kapa
+    // CALİSANLAR
+    char calisanSatiri[SATIR]; // Her satırı okumak için buffer
 
-    return yeniBirimListesi; // guncellenmis birim listesi
-}
-
-// Tüm Calisan bilgilerini dosyadan diziye aktarma
-calisan ***calisaniDosyadanDiziyeAktar(const char* calisanDosyasi, calisan ***yeniCalisanListesi, birim ***yeniBirimListesi){
-    FILE *calisanFile = fopen(calisanDosyasi, "r"); // dosyadan okuma modu
-
-    if(calisanFile == NULL){
-        printf("Dosya bulunamadi");
-        exit(EXIT_FAILURE);
-    }
-    
-    if((*yeniCalisanListesi) == NULL){ // dosya bossa?
-        printf("Bellek acilamadi");
-        exit(EXIT_FAILURE);
-    }
-
-    char satir[SATIR]; // Her satırı okumak için buffer
-
-    while (fgets(satir, SATIR, calisanFile)) // dosyadaki satirlari okuyoruz
+    while (fgets(calisanSatiri, SATIR, calisanlar)) // dosyadaki satirlari okuyoruz
     {
         char *yeniCalisanAdi = (char*)calloc(AD_SOYAD_SIZE, sizeof(char)); // calisanAdi icin 30 birimlik bellek ayirildi
         char *yeniCalisanSoyadi = (char*)calloc(AD_SOYAD_SIZE, sizeof(char)); // calisanAdi icin 30 birimlik bellek ayirildi
@@ -349,7 +338,7 @@ calisan ***calisaniDosyadanDiziyeAktar(const char* calisanDosyasi, calisan ***ye
             printf("Soyad ayirdim\n");
         }
 
-        if (sscanf(satir, "%[^,], %[^,], %u, %d, %d\n", yeniCalisanAdi, yeniCalisanSoyadi, &yeniBirimKodu, &yeniMaas, &yeniGirisYili) == 5) // birim adi
+        if (sscanf(calisanSatiri, "%[^,], %[^,], %u, %d, %d\n", yeniCalisanAdi, yeniCalisanSoyadi, &yeniBirimKodu, &yeniMaas, &yeniGirisYili) == 5) // birim adi
         {
             printf("Calisan satiri okundu\n");
 
@@ -388,7 +377,7 @@ calisan ***calisaniDosyadanDiziyeAktar(const char* calisanDosyasi, calisan ***ye
             // dosyadan alinan verilerden yeni calisan olusturma
             calisan *newEmp = calisanOlustur(yeniCalisanAdi, yeniCalisanSoyadi, yeniBirimKodu, yeniMaas, yeniGirisYili);
 
-            calisanBilgileriniYazdir(newEmp);
+            //calisanBilgileriniYazdir(newEmp);
             if (newEmp == NULL)
             {
                 printf("bellek acilamadi");
@@ -403,21 +392,19 @@ calisan ***calisaniDosyadanDiziyeAktar(const char* calisanDosyasi, calisan ***ye
                     break;
                 }
 
-                if(newEmp->birimKodu == ((*yeniBirimListesi)[i])->birimKodu){
-                    birimeCalisanEkle(((*yeniBirimListesi)[i]), newEmp);
+                if(newEmp->birimKodu == (*yeniBirimListesi)[i]->birimKodu){
+                    birimeCalisanEkle((*yeniBirimListesi)[i], newEmp);
                     break;
                 }
             }
         }
         else 
         {
-            printf("Satir okunamadi\n");
+            printf("Calisan satiri okunamadi\n");
         }
-    
-        
+
     }
 
-    fclose(calisanFile);
-
-    return yeniCalisanListesi;
+    fclose(birimler);
+    fclose(calisanlar);
 }

@@ -19,9 +19,6 @@
 #define CALISAN_BIRIM_SIZE  20 // Birim ve çalışan listeleri için eleman sınırlaması
 #define SATIR 256
 
-#define calisan_file "calisanlar.txt"
-#define birim_file "birimler.txt"
-
 // YAPILAR (STRUCT)
 typedef struct {
     char *calisanAdi;
@@ -50,8 +47,7 @@ float birimMaasOrtHesapla(birim *department);
 void yuksekMaasliCalisanListele(birim *department, float ortalamaMaas);
 void enYuksekMaaslar(birim **birimListesi);
 void maasiGuncelle(birim *birim, int yeniMaas, int suankiYil);
-void dosyayaYazdir(birim **yeniBirimListesi, const char *calisanlar_dosyasi, const char* birimler_dosyasi);
-birim ***birimiDosyadanDiziyeAktar(const char *birim_calisanlar_dosyasi, birim ***yeniBirimListesi);
-calisan ***calisaniDosyadanDiziyeAktar(const char *dosyaAdi, calisan ***yeniCalisanListesi, birim ***yeniBirimListesi);
+void dosyayaYaz(int argc, char *argv[], birim **birimListesi, calisan **calisanListesi);
+void diziyeAktar(int argc, char *argv[], birim ***yeniBirimListesi, calisan ***yeniCalisanListesi);
 
 #endif // DENEME_H

@@ -2,7 +2,7 @@
 Hatice Hande, Dereli, 21221, 25000, 2022
 Beyza, Yilmaz, 21221, 35000, 2022
 Erva Sara, Ozdal, 21221, 30000, 2022
-Mesut, Ayvaz, 61287, 70000, 1997
 Ebrar, Birinci, 21312, 40000, 2022
 Safak, Kilic, 21312, 45000, 2022
 Sude, Dogan, 21312, 35000, 2022
+Mesut, Ayvaz, 61287, 99999, 1997
