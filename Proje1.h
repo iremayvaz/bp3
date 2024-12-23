@@ -16,7 +16,7 @@
 #include <stdlib.h>
 
 #define AD_SOYAD_SIZE 30 // Birim adı, Çalışan adı ve soyadı için karakter sınırlaması
-#define CALISAN_BIRIM_SIZE  20 // Birim ve çalışan listeleri için eleman sınırlaması
+#define birimCalisanlarSize  20 // Birim çalışanları için eleman sınırlaması
 #define SATIR 256
 
 // YAPILAR (STRUCT)
