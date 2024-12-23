@@ -74,9 +74,9 @@ int main(int argc, char *argv[]){
 
     //dosyayaYaz(argc, argv, birimListesi, calisanListesi);
     diziyeAktar(argc, argv, &yeniBirimListesi, &yeniCalisanListesi);
-    dinamikBirimYazdir(yeniBirimListesi);
+    /*dinamikBirimYazdir(yeniBirimListesi);
 
-    /*
+    
     for (size_t b = 0; b < CALISAN_BIRIM_SIZE; b++) // yeniBirimListesini gez
     {
         if(yeniCalisanListesi[b] == 0){ // yazdirilacak birim yoksa
@@ -91,5 +91,15 @@ int main(int argc, char *argv[]){
     //dosyayaYaz(argc, argv, birimListesi, calisanListesi);
 
     freeAll(yeniBirimListesi, yeniCalisanListesi);
+    dinamikBirimYazdir(yeniBirimListesi);
+
+    for (size_t b = 0; b < CALISAN_BIRIM_SIZE; b++) // yeniBirimListesini gez
+    {
+        if(yeniCalisanListesi[b] == 0){ // yazdirilacak birim yoksa
+            break; // donguden cik
+        }
+        // varsa
+        calisanBilgileriniYazdir(yeniCalisanListesi[b]);
+    }
     return 0;
 }

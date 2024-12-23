@@ -415,138 +415,68 @@ void diziyeAktar(int argc, char *argv[], birim ***yeniBirimListesi, calisan ***y
 }
 
 // Bellek tahsislerini free'le
-void freeAll(birim **departments, calisan **employees){
-    if(departments == NULL){ // departments boss
+void freeAll(birim **departments, calisan **employees) {
+    if (departments == NULL) {
         printf("\nDepartments zaten bos\n");
         return;
     }
 
-    for (size_t b = 0; b < CALISAN_BIRIM_SIZE; b++) // birimlerin icinde
-    {
-        if(departments[b] == NULL){ // bosaltilacak birim yoksa
-            printf("Birim zaten bos\n");
-            break;
-        } else { // varsa
-            printf("1\n");
-            if (departments[b]->birimCalisanlar == NULL)
-            { // birimin birim calisanlari bossa
-                printf("Birimin calisanlari zaten bos\n");
-                break;
-            }
-            else
-            {                         
-                printf("2\n");                          // degilse
-                for (size_t c = 0; c < CALISAN_BIRIM_SIZE; c++) // birimin calisanlarinda
-                {   
-                    if(departments[b]->birimCalisanlar[c] == NULL){ // birim calisanlari bossa
-                        printf("birim calisanlarinin calisani zaten bos\n");
-                        break;
-                    } else { // degilse
-                    printf("3\n");
-                        if(departments[b]->birimCalisanlar[c]->calisanAdi == NULL){
-                            printf("birim calisaninin adi bos\n");
-                            break;
-                        }
-                        else
-                        {
-                            printf("4\n");
-                            free(departments[b]->birimCalisanlar[c]->calisanAdi); // calisan adi bellegi serbest
+    for (size_t b = 0; b < birimlerSize; b++) {
+        if (departments[b] != NULL) {
+            if (departments[b]->birimCalisanlar != NULL) {
+                /*for (size_t c = 0; c < CALISAN_BIRIM_SIZE; c++) {
+                    if (departments[b]->birimCalisanlar[c] != NULL) {
+                        if (departments[b]->birimCalisanlar[c]->calisanAdi != NULL) {
+                            free(departments[b]->birimCalisanlar[c]->calisanAdi);
                             departments[b]->birimCalisanlar[c]->calisanAdi = NULL;
                         }
-                        if(departments[b]->birimCalisanlar[c]->calisanSoyadi == NULL){
-                            printf("birim calisaninin soyadi bos\n");
-                            break;
-                        } else {
-                            printf("5\n");
-                            free(departments[b]->birimCalisanlar[c]->calisanSoyadi); // calisan soyadi bellegi serbest
+
+                        if (departments[b]->birimCalisanlar[c]->calisanSoyadi != NULL) {
+                            free(departments[b]->birimCalisanlar[c]->calisanSoyadi);
                             departments[b]->birimCalisanlar[c]->calisanSoyadi = NULL;
+                        }
 
-                        }
-                        if(departments[b]->birimCalisanlar[c] == NULL){
-                            printf("birim calisanlari zatn bos\n");
-                            break;
-                        }else{
-                            printf("6\n");
-                            free(departments[b]->birimCalisanlar[c]); // calisan bellegi serbest
-                            departments[b]->birimCalisanlar[c] = NULL;
-                        }
+                        free(departments[b]->birimCalisanlar[c]);
+                        departments[b]->birimCalisanlar[c] = NULL;
                     }
+                }*/
+                free(departments[b]->birimCalisanlar);
+                departments[b]->birimCalisanlar = NULL;
+            }
+
+            if (departments[b]->birimAdi != NULL) {
+                free(departments[b]->birimAdi);
+                departments[b]->birimAdi = NULL;
+            }
+
+            free(departments[b]);
+            departments[b] = NULL;
+        }
+    }
+
+    free(departments);
+    departments = NULL;
+
+    if (employees != NULL) {
+        for (size_t c = 0; c < calisanlarSize; c++) {
+            if (employees[c] != NULL) {
+                if (employees[c]->calisanAdi != NULL) {
+                    free(employees[c]->calisanAdi);
+                    employees[c]->calisanAdi = NULL;
                 }
 
-                if(departments[b]->birimCalisanlar == NULL){
-                    printf("birim calisanlari bosaltilmis\n");
-                    break;
-                } else{
-                    printf("7\n");
-                    free(departments[b]->birimCalisanlar); // birim calisanlari icin bellek serbest
-                    departments[b]->birimCalisanlar = NULL;
+                if (employees[c]->calisanSoyadi != NULL) {
+                    free(employees[c]->calisanSoyadi);
+                    employees[c]->calisanSoyadi = NULL;
                 }
 
-                if(departments[b]->birimAdi == NULL){
-                    printf("birim adi zatn bos\n");
-                    break;
-                } else{
-                    printf("8\n");
-                    free(departments[b]->birimAdi); // birim adi bellegi serbest
-                    departments[b]->birimAdi = NULL;
-                }
-                if(departments[b] == NULL){
-                    printf("birim zatn bos\n");
-                    break;
-                }else{
-                    printf("9\n");
-                    free(departments[b]); // birim bellegi serbest
-                    departments[b] = NULL;
-                }
+                free(employees[c]);
+                employees[c] = NULL;
             }
         }
+        free(employees);
+        employees = NULL;
     }
 
-    printf("birimleri bosaltmadım\n");
-    free(departments); // birimler dizisi serbest
-    departments = NULL;
-    printf("birimleri bosalttim\n");
-
-    for (size_t c = 0; c < calisanlarSize; c++) // calisanlarin icinde
-    {
-        if(employees[c]->calisanAdi == NULL){
-            printf("calisan adi zatn bos\n");
-            break;
-        }
-        else
-        {
-            printf("11\n");
-            free(employees[c]->calisanAdi); // calisan adi bellegi serbest
-            employees[c]->calisanAdi = NULL;
-        }
-        printf("soyad\n");
-        if (employees[c]->calisanSoyadi == NULL)
-        {
-            printf("calisan soyadi zatn bos\n");
-            break;
-        }
-        else
-        {
-            printf("12\n");
-            free(employees[c]->calisanSoyadi); // calisan soyadi bellegi serbest
-            employees[c]->calisanSoyadi = NULL;
-        }
-        printf("calisan\n");
-        if (employees[c] == NULL)
-        {
-            printf("calisan zatn bos\n");
-            break;
-        }
-        else
-        {
-            printf("13\n");
-            free(employees[c]); // calisan bellegi serbest
-            employees[c] = NULL;
-        }
-    }
-
-    printf("calisanlari bosaltmadim\n");
-    free(employees); // calisanlar dizisi serbest
-    employees = NULL;
-    printf("calisanlari bosalttim\n");
+    printf("Tüm bellek serbest bırakıldı.\n");
 }
