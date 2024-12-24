@@ -269,11 +269,6 @@ void diziyeAktar(int argc, char *argv[], birim ***yeniBirimListesi, calisan ***y
         exit(EXIT_FAILURE);
     }
 
-    if((*yeniBirimListesi) == NULL || (*yeniCalisanListesi) == NULL){ // liste bossa?
-        printf("Bellek acilamadi");
-        exit(EXIT_FAILURE);
-    }
-
     // BIRIMLER
     char satir[SATIR]; // Her satırı okumak için buffer
 
