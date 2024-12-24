@@ -28,6 +28,18 @@ int main(int argc, char *argv[])
     // diziye aktarılmış mı kontrol edelim
     dinamikBirimYazdir(birimler);
 
+    // birimlerin en yüksek maaşlı çalışanlarını görelim
+    enYuksekMaaslar(birimler);
+
+    // birimlerin ortalama maaşlarını hesaplayalım.
+    birim *bm = birimler[0];
+    float bm_avg = birimMaasOrtHesapla(bm);
+    printf("Bilgisayar Muhendisligi maas ortalamasi: %.2f\n", bm_avg);
+
+    birim *im = birimler[1];
+    float im_avg = birimMaasOrtHesapla(im);
+    printf("İnsaat Muhendisligi maas ortalamasi: %.2f\n", im_avg);
+
     /*calisan *c1 = calisanOlustur("Muhammet Mustafa", "Sağlam", 26754, 35000, 2001);
     calisan *c1 = calisanOlustur("Mehmet Aral", "Özaltın", 26754, 30000, 2022);
     calisan *c1 = calisanOlustur("Elif Nur", "Gül", 26754, 30000, 2022);*/

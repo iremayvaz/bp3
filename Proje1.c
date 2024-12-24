@@ -127,7 +127,7 @@ void birimBilgileriniYazdir(birim *department){
 
 // Birim türünden dinamik dizi bilgilerini yazdırma
 void dinamikBirimYazdir(birim **yeniBirimListesi){
-    printf("------Birimler dizisi yazdırılıyor------");
+    printf("------Birimler dizisi yazdırılıyor------\n");
     for (size_t b = 0; b < birimlerSize; b++) // yeniBirimListesini gez
     {
         if(yeniBirimListesi[b] == 0){ // yazdirilacak birim yoksa
@@ -140,6 +140,7 @@ void dinamikBirimYazdir(birim **yeniBirimListesi){
 
 // Birimin çalışanlarının maaş ort.unu hesaplama 
 float birimMaasOrtHesapla(birim *department){
+    printf("---Birimin maaş ortalaması hesaplanıyor---\n");
     int count = 0; // kişi sayısı belirlemek için
     int total = 0; // kişilerin toplam maaşı
 
@@ -156,9 +157,7 @@ float birimMaasOrtHesapla(birim *department){
 
 // Birimdeki ort maaştan yüksek maaş alan çalışanları listeleme
 void yuksekMaasliCalisanListele(birim *department, float ortalamaMaas){
-    printf("------------------------------------------\n");
-    printf("--Yüksek maaşlı çalışanlar yazdırılıyorr--\n");
-    printf("------------------------------------------\n");
+    printf("--Birimin yüksek maaşlı çalışanları yazdırılıyor--\n");
     for (size_t c = 0; c < birimCalisanlarSize; c++)
     {
         if(department->birimCalisanlar[c] != NULL){ // çalışan varsa
@@ -167,18 +166,13 @@ void yuksekMaasliCalisanListele(birim *department, float ortalamaMaas){
             }
         }
     }
-    printf("------------------------------------------\n");
-    printf("---------Yüksek maaşlı çalışanlar---------\n");
-    printf("------------------------------------------\n");
 }
 
 // her birimin ayrı ayrı en yüksek maaşlı çalışanlarını listeleme
 void enYuksekMaaslar(birim **yeniBirimListesi){
     calisan *maxMaasliCalisan = (calisan *)malloc(sizeof(calisan)); // en yüksek maaş icin default çalışan
 
-    printf("------------------------------------------\n");
     printf("-En yüksek maaşlı çalışanlar yazdırılıyor-\n");
-    printf("------------------------------------------\n");
 
     for (size_t b = 0; b < birimlerSize; b++) // "yeniBirimListesi"ndeki birimleri dolaşıyoruz
     {
@@ -202,15 +196,12 @@ void enYuksekMaaslar(birim **yeniBirimListesi){
         calisanBilgileriniYazdir(maxMaasliCalisan);
     }
 
-    printf("------------------------------------------\n");
-    printf("------------En yüksek maaşlar-------------\n");
-    printf("------------------------------------------\n");
-
     free(maxMaasliCalisan); // bellek tahsisi free edildi
 }
 
 // 10 yıldan fazla çalışanların maaşı parametre olarak verilen maaştan düşükse maaşı güncelleme
 void maasiGuncelle(birim *birim, int yeniMaas, int suankiYil){
+    printf("----------Maaşlar güncelleniyor----------\n");
     for (size_t c = 0; c < birimCalisanlarSize; c++) // "calisanListesi"nde dolaşıyoruz
     {
         if(birim->birimCalisanlar[c] == 0){ // yazdirilacak calisan yoksa
@@ -220,6 +211,7 @@ void maasiGuncelle(birim *birim, int yeniMaas, int suankiYil){
         if(suankiYil - birim->birimCalisanlar[c]->girisYili > 10){ // calisan 10 yildan fazla calistiysa
             if(birim->birimCalisanlar[c]->maas < yeniMaas){ // ve maasi, parametre olarak gönderilen maastan dusukse
                 birim->birimCalisanlar[c]->maas = yeniMaas; // maasi guncelle
+                printf("Çalışan %d maaşı başarıyla güncellendi.\n", (c + 1));
             }
         }
     }
