@@ -28,12 +28,9 @@ int calisanlarSize = 0; // calisanlar dizisi uzunluğu
 // ilgili değerlerle calisan struct döndüren fonksiyon
 calisan *calisanOlustur(char *calisanAdi, char *calisanSoyadi, unsigned short int birimKodu, int maas, int girisYili){ 
     calisan *yeniCalisan = (calisan *)malloc(sizeof(calisan)); // yeniCalisan icin bellek tahsisi
-
-    yeniCalisan->calisanAdi = (char *)malloc((strlen(calisanAdi) + 1) * sizeof(char)); // calisan ismi icin bellek tahsisi
-    yeniCalisan->calisanSoyadi = (char *)malloc((strlen(calisanSoyadi) + 1) * sizeof(char)); // calisan soyismi icin bellek tahsisi
     
-    strcpy(yeniCalisan->calisanAdi, calisanAdi); 
-    strcpy(yeniCalisan->calisanSoyadi, calisanSoyadi);
+    yeniCalisan->calisanAdi = strdup(calisanAdi); 
+    yeniCalisan->calisanSoyadi = strdup(calisanSoyadi);
     yeniCalisan->birimKodu = birimKodu;
     yeniCalisan->maas = maas;
     yeniCalisan->girisYili = girisYili;
@@ -44,12 +41,10 @@ calisan *calisanOlustur(char *calisanAdi, char *calisanSoyadi, unsigned short in
 // ilgili değerlerle birim struct döndüren fonksiyon
 birim *birimOlustur(char *birimAdi, unsigned short int birimKodu){ 
     birim *yeniBirim = (birim *)malloc(sizeof(birim)); // yeniBirim icin bellek tahsisi
-
-    yeniBirim->birimAdi = (char *)malloc((strlen(birimAdi) + 1) * sizeof(char)); // birim adi icin bellek tahsisi
     
-    yeniBirim->birimCalisanlar = (calisan**)calloc(birimCalisanlarSize, sizeof(calisan *)); // birim calisanlari icin bellek tahsisi
+    yeniBirim->birimCalisanlar = (calisan**)calloc(birimCalisanlarSize, sizeof(calisan *)); // birim calisanlari icin 20 birimlik bellek tahsisi
 
-    strcpy(yeniBirim->birimAdi, birimAdi); // birim adını ekle
+    yeniBirim->birimAdi = strdup(birimAdi); // birim adını ekle
     yeniBirim->birimKodu = birimKodu; // birim kodunu ekle
 
     return yeniBirim; // yeni birim
@@ -57,7 +52,8 @@ birim *birimOlustur(char *birimAdi, unsigned short int birimKodu){
 
 // oluşturulan çalışanı ilgili birime ekleme
 void birimeCalisanEkle(birim *department, calisan *employee){ // main'den birim ve calisan referans alınır
-    if(department->birimKodu == employee->birimKodu){
+    if(department->birimKodu == employee->birimKodu)
+    {
         for (size_t c = 0; c < (birimCalisanlarSize - 1); c++) // birimin birim calisanlarinda geziyoruz
         {
                 if(department->birimCalisanlar[c] == NULL){ // calisan olmayan yere
@@ -73,10 +69,11 @@ void birimeCalisanEkle(birim *department, calisan *employee){ // main'den birim 
 
 // oluşturulan birimi "yeniBirimListesi"ne ekleme
 void birimiEkle(birim ***yeniBirimListesi, birim *department){ // main'den dizi referans alınır
+    (*yeniBirimListesi) = realloc((*yeniBirimListesi), (birimlerSize + 1) * sizeof(birim*));
+
     if((*yeniBirimListesi)[birimlerSize] == NULL){ // boş yere 
         (*yeniBirimListesi)[birimlerSize] = department; // yeni birimi yerleştir
         birimlerSize++;
-        (*yeniBirimListesi) = realloc((*yeniBirimListesi), (birimlerSize + 1) * sizeof(birim*));
     } else {
         printf("Birim, birimler listesine eklenemedi.\n");
     }
@@ -85,10 +82,11 @@ void birimiEkle(birim ***yeniBirimListesi, birim *department){ // main'den dizi 
 
 // olusturulan calisani "calisanListesi"ne ekle
 void calisaniEkle(calisan ***calisanListesi, calisan *newCalisan){ // main'den dizi referans alınır
-    if((*calisanListesi)[calisanlarSize] == NULL){ // boş yere 
+    (*calisanListesi) = realloc((*calisanListesi), (calisanlarSize + 1) * sizeof(calisan *));
+    if((*calisanListesi)[calisanlarSize] == NULL)
+    { // boş yere 
         (*calisanListesi)[calisanlarSize] = newCalisan; // yeni calisani yerleştir
         calisanlarSize++;
-        (*calisanListesi) = realloc((*calisanListesi), (calisanlarSize + 1) * sizeof(calisan *));
     } else {
         printf("Çalışan, çalışanlar listesine eklenemedi.\n");
     }
@@ -240,6 +238,8 @@ void dosyayaYaz(int argc, char *argv[], birim **birimListesi, calisan **calisanL
                                        birimListesi[b]->birimKodu); // birim kodu
     }
 
+    fclose(birimFile);
+
     // CALISANLAR
     for (size_t c = 0; c < calisanlarSize; c++) // "calisanListesi"ni dolasiyoruz
     {
@@ -253,7 +253,8 @@ void dosyayaYaz(int argc, char *argv[], birim **birimListesi, calisan **calisanL
                                                      calisanListesi[c]->maas, // calisanin maasi
                                                      calisanListesi[c]->girisYili); // calisanin giris yili
     }
-    
+
+    fclose(calisanFile);
 }
 
 // Tüm Birim ve Calisan bilgilerini dosyadan diziye aktarma
@@ -274,34 +275,16 @@ void diziyeAktar(int argc, char *argv[], birim ***yeniBirimListesi, calisan ***y
     }
 
     // BIRIMLER
-    char birimSatiri[SATIR]; // Her satırı okumak için buffer
+    char satir[SATIR]; // Her satırı okumak için buffer
 
-    while (fgets(birimSatiri, SATIR, birimler)) // birim dosyasındaki satirlari okuyoruz
+    while (fgets(satir, SATIR, birimler)) // birim dosyasındaki satirlari okuyoruz
     {
-        char *yeniBirimAdi = (char *)calloc(AD_SOYAD_SIZE, sizeof(char)); // 30 birimlik bellek ayırıldı
+        char yeniBirimAdi[SATIR];
         unsigned short int yeniBirimKodu;
         
-        if (sscanf(birimSatiri, "%[^,], %u", yeniBirimAdi, &yeniBirimKodu) == 2) // birim adi
+        if (sscanf(satir, "%[^,], %u", yeniBirimAdi, &yeniBirimKodu) == 2) // birim adi
         {
             printf("Birim satiri okundu\n");
-
-            // realloc
-            int length = 0; // birimAdi uzunlugu
-
-            for (size_t i = 0; i < AD_SOYAD_SIZE; i++)
-            {
-                if(yeniBirimAdi[i] == 0){
-                    break;
-                }
-                length++;
-            }
-
-            yeniBirimAdi = realloc(yeniBirimAdi, (length + 1) * sizeof(char)); // satirdan okunan verinin uzunluğuyla realloc
-
-            if(yeniBirimAdi == NULL){ // newDept olusturulabildi mi?
-                printf("birim adi bellegi acilamadi");
-                break;
-            }
 
             // dosyadan okunan verilerle yeni birim olusturma
             birim *newDept = birimOlustur(yeniBirimAdi, yeniBirimKodu);
@@ -319,65 +302,21 @@ void diziyeAktar(int argc, char *argv[], birim ***yeniBirimListesi, calisan ***y
         }
     }
 
-    // CALİSANLAR
-    char calisanSatiri[SATIR]; // Her satırı okumak için buffer
+    fclose(birimler);
 
-    while (fgets(calisanSatiri, SATIR, calisanlar)) // dosyadaki satirlari okuyoruz
+    // CALİSANLAR
+
+    while (fgets(satir, SATIR, calisanlar)) // dosyadaki satirlari okuyoruz
     {
-        char *yeniCalisanAdi = (char*)calloc(AD_SOYAD_SIZE, sizeof(char)); // calisanAdi icin 30 birimlik bellek ayirildi
-        char *yeniCalisanSoyadi = (char*)calloc(AD_SOYAD_SIZE, sizeof(char)); // calisanAdi icin 30 birimlik bellek ayirildi
+        char yeniCalisanAdi[256]; // calisanAdi icin 30 birimlik bellek ayirildi
+        char yeniCalisanSoyadi[256]; // calisanAdi icin 30 birimlik bellek ayirildi
         unsigned short int yeniBirimKodu;
         int yeniMaas;
         int yeniGirisYili;
-        
-        if(yeniCalisanAdi == NULL){
-            printf("Ad icin bellek ayiramadim\n");
-            break;
-        }else {
-            printf("Ad ayirdim\n");
-        }
-        if(yeniCalisanSoyadi == NULL){
-            printf("Soyad icin bellek ayiramadim\n");
-            break;
-        }else {
-            printf("Soyad ayirdim\n");
-        }
 
-        if (sscanf(calisanSatiri, "%[^,], %[^,], %u, %d, %d\n", yeniCalisanAdi, yeniCalisanSoyadi, &yeniBirimKodu, &yeniMaas, &yeniGirisYili) == 5) // birim adi
+        if (sscanf(satir, "%[^,], %[^,], %u, %d, %d\n", yeniCalisanAdi, yeniCalisanSoyadi, &yeniBirimKodu, &yeniMaas, &yeniGirisYili) == 5) // birim adi
         {
             printf("Calisan satiri okundu\n");
-
-            // calisan adi icin realloc
-            int adLength = 0; // birimAdi uzunlugu
-            for (size_t i = 0; i < AD_SOYAD_SIZE; i++)
-            {
-                if(yeniCalisanAdi[i] == 0){
-                    break;
-                }
-                adLength++;
-            }
-            yeniCalisanAdi = realloc(yeniCalisanAdi, (adLength + 1) * sizeof(char));
-
-            if(yeniCalisanAdi == NULL){ // newDept olusturulabildi mi?
-                printf("calisan adi bellegi acilamadi");
-                break;
-            }
-
-            // calisan soyadi icin realloc
-            int soyadLength = 0;
-            for (size_t i = 0; i < AD_SOYAD_SIZE; i++)
-            {
-                if(yeniCalisanSoyadi[i] == 0){
-                    break;
-                }
-                soyadLength++;
-            }
-            yeniCalisanSoyadi = realloc(yeniCalisanSoyadi, (soyadLength + 1) * sizeof(char));
-
-            if(yeniCalisanSoyadi == NULL){ // newDept olusturulabildi mi?
-                printf("calisan soyadi bellegi acilamadi");
-                break;
-            }
 
             // dosyadan alinan verilerden yeni calisan olusturma
             calisan *newEmp = calisanOlustur(yeniCalisanAdi, yeniCalisanSoyadi, yeniBirimKodu, yeniMaas, yeniGirisYili);
@@ -390,6 +329,7 @@ void diziyeAktar(int argc, char *argv[], birim ***yeniBirimListesi, calisan ***y
             }
 
             calisaniEkle(yeniCalisanListesi, newEmp);
+
             for (size_t i = 0; i < birimlerSize; i++) // birimler listesini geziyoruz
             {
                 if(((*yeniBirimListesi)[i]) == NULL){
@@ -410,7 +350,6 @@ void diziyeAktar(int argc, char *argv[], birim ***yeniBirimListesi, calisan ***y
 
     }
 
-    fclose(birimler);
     fclose(calisanlar);
 }
 
@@ -421,46 +360,28 @@ void freeAll(birim **departments, calisan **employees) {
         return;
     }
 
-    for (size_t b = 0; b < birimlerSize; b++) {
-        if (departments[b] != NULL) {
-            if (departments[b]->birimCalisanlar != NULL) {
-                free(departments[b]->birimCalisanlar);
-                departments[b]->birimCalisanlar = NULL;
-            }
+    if (employees == NULL) {
+        printf("\nEmployees zaten bos\n");
+        return;
+    }
 
-            if (departments[b]->birimAdi != NULL) {
-                free(departments[b]->birimAdi);
-                departments[b]->birimAdi = NULL;
-            }
-
-            free(departments[b]);
-            departments[b] = NULL;
-        }
+    for (size_t b = 0; b < birimlerSize; b++) 
+    {
+        free(departments[b]->birimCalisanlar);
+        free(departments[b]->birimAdi);
+        free(departments[b]);
     }
 
     free(departments);
-    departments = NULL;
 
-    if (employees != NULL) {
-        for (size_t c = 0; c < calisanlarSize; c++) {
-            if (employees[c] != NULL) {
-                if (employees[c]->calisanAdi != NULL) {
-                    free(employees[c]->calisanAdi);
-                    employees[c]->calisanAdi = NULL;
-                }
-
-                if (employees[c]->calisanSoyadi != NULL) {
-                    free(employees[c]->calisanSoyadi);
-                    employees[c]->calisanSoyadi = NULL;
-                }
-
-                free(employees[c]);
-                employees[c] = NULL;
-            }
-        }
-        free(employees);
-        employees = NULL;
+    
+    for (size_t c = 0; c < calisanlarSize; c++) {    
+        free(employees[c]->calisanAdi);
+        free(employees[c]->calisanSoyadi);
+        free(employees[c]);
     }
-
+    
+    free(employees);
+    
     printf("Tüm bellek serbest bırakıldı.\n");
 }

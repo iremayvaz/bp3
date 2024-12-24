@@ -40,9 +40,44 @@ int main(int argc, char *argv[])
     float im_avg = birimMaasOrtHesapla(im);
     printf("İnsaat Muhendisligi maas ortalamasi: %.2f\n", im_avg);
 
-    /*calisan *c1 = calisanOlustur("Muhammet Mustafa", "Sağlam", 26754, 35000, 2001);
-    calisan *c1 = calisanOlustur("Mehmet Aral", "Özaltın", 26754, 30000, 2022);
-    calisan *c1 = calisanOlustur("Elif Nur", "Gül", 26754, 30000, 2022);*/
+    // Birimde 10+ yıldır çalışan ama maaşı ortalamadan düşük olanların maaşlarını güncelleyelim
+    maasiGuncelle(bm, 99999, 2024);
+    birimBilgileriniYazdir(bm);
+
+    maasiGuncelle(im, 111111, 2024);
+    birimBilgileriniYazdir(im);
+
+    // yeni çalışanlar oluşturalım
+    calisan *newEmp1 = calisanOlustur("Muhammet Mustafa", "Sağlam", 26754, 35000, 2001);
+    calisan *newEmp2 = calisanOlustur("Mehmet Aral", "Özaltın", 26754, 30000, 2022);
+    calisan *newEmp3 = calisanOlustur("Elif Nur", "Gül", 26754, 30000, 2022);
+
+    // çalışan bilgilerini görelim
+    calisanBilgileriniYazdir(newEmp1);
+    calisanBilgileriniYazdir(newEmp2);
+    calisanBilgileriniYazdir(newEmp3);
+
+    // yeni birim oluşturalım
+    birim *newDepartment = birimOlustur("Elektrik Elektronik Muhendisligi", 26754);
+
+    // çalışanları birime ekleyelim
+    birimeCalisanEkle(newDepartment, newEmp1);
+    birimeCalisanEkle(newDepartment, newEmp2);
+    birimeCalisanEkle(newDepartment, newEmp3);
+
+    // çalışanları "calisanlar"a ekleyelim
+    calisaniEkle(&calisanlar, newEmp1);
+    calisaniEkle(&calisanlar, newEmp2);
+    calisaniEkle(&calisanlar, newEmp3);
+
+    // birimi "birimler"e ekleyelim
+    birimiEkle(&birimler, newDepartment);
+
+    // yeni guncellemelerle dizileri dosyalara aktaralım
+    dosyayaYaz(argc, argv, birimler, calisanlar);
+
+    // tahsis edilen bellekleri serbest bırakalım
+    freeAll(birimler, calisanlar);
 
     return 0;
 }
