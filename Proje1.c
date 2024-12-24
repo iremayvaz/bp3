@@ -56,23 +56,19 @@ birim *birimOlustur(char *birimAdi, unsigned short int birimKodu){
 }
 
 // oluşturulan çalışanı ilgili birime ekleme
-void birimeCalisanEkle(birim *department, calisan *employee){ // main'den birim referans alınır
-    int kapasite = 0;
-    
-    if(kapasite < (birimCalisanlarSize - 1)){ // 0'dan başladığımız için 19a kadar diyoruz.
+void birimeCalisanEkle(birim *department, calisan *employee){ // main'den birim ve calisan referans alınır
+    if(department->birimKodu == employee->birimKodu){
         for (size_t c = 0; c < (birimCalisanlarSize - 1); c++) // birimin birim calisanlarinda geziyoruz
         {
-            if(department->birimCalisanlar[c] == NULL){ // calisan olmayan yere
-                department->birimCalisanlar[c] = employee; // calisani yerlestirdik
-                printf("Çalışan birime yerleştirildi.\n");
-                break;
-            }
+                if(department->birimCalisanlar[c] == NULL){ // calisan olmayan yere
+                    department->birimCalisanlar[c] = employee; // calisani yerlestirdik
+                    printf("Çalışan birime yerleştirildi.\n"); // kullanıcıyı bilgilendirme
+                    break;
+                }
         }
-
     } else {
-        printf("Birim çalışanlar kapasitesi dolu!\n");
+        printf("Çalışan yanlış birime eklenmeye çalışılıyor!");
     }
-    // guncellenmis birim
 }
 
 // oluşturulan birimi "yeniBirimListesi"ne ekleme
@@ -131,6 +127,7 @@ void birimBilgileriniYazdir(birim *department){
 
 // Birim türünden dinamik dizi bilgilerini yazdırma
 void dinamikBirimYazdir(birim **yeniBirimListesi){
+    printf("------Birimler dizisi yazdırılıyor------");
     for (size_t b = 0; b < birimlerSize; b++) // yeniBirimListesini gez
     {
         if(yeniBirimListesi[b] == 0){ // yazdirilacak birim yoksa

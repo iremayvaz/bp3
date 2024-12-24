@@ -1,14 +1,17 @@
 İrem, Ayvaz, 21221, 20000, 2022
-Hatice Hande, Dereli, 21221, 25000, 2022
-Beyza, Yilmaz, 21221, 35000, 2022
-Erva Sara, Ozdal, 21221, 30000, 2022
-Mesut, Ayvaz, 21221, 99999, 1997
-Ebrar, Birinci, 21312, 40000, 2022
-Safak, Kilic, 21312, 45000, 2022
-Sude, Dogan, 21312, 35000, 2022
-Rana, Orten, 12345, 20000, 2000
-Dilara, Kuloglu, 12345, 4000, 2024
-Ekrem, Bas, 12345, 40000, 2020
-Umit, Ozteker, 12345, 30000, 2000
-Mehmet Enes, Erden, 12345, 35000, 2014
-Muhammet Mustafa, Sağlam, 12345, 90000, 2001
+Hatice Hande, Dereli, 21221, 20000, 2022
+Erva Sara, Özdal, 21221, 20000, 2023
+Beyza, Yılmaz, 21221, 20000, 2023
+Ekrem, Baş, 21221, 20000, 2022
+Ümit, Özteker, 21221, 20000, 2022
+Mehmet Enes, Erden, 21221, 20000, 2022
+Ebrar, Kipoğlu, 21221, 20000, 2022
+Kadir, Aram, 21221, 60000, 2010
+Musa, Aydin, 21221, 70000, 2010
+Zeki, Kus, 21221, 65000, 2014
+Ali, Nizam, 21221, 80000, 2010
+Ebrar, Birinci, 22365, 25000, 2022
+Zeynep Sude, Doğan, 22365, 25000, 2022
+Şafak, Kılıç, 22365, 30000, 2022
+Sadullah, Göncü, 22365, 55000, 2013
+Nazım, Aghayev, 22365, 90000, 2010
