@@ -40,6 +40,9 @@ int main(int argc, char *argv[])
     float im_avg = birimMaasOrtHesapla(im);
     printf("İnsaat Muhendisligi maas ortalamasi: %.2f\n", im_avg);
 
+    yuksekMaasliCalisanListele(bm, bm_avg);
+    yuksekMaasliCalisanListele(im, im_avg);
+
     // Birimde 10+ yıldır çalışan ama maaşı ortalamadan düşük olanların maaşlarını güncelleyelim
     maasiGuncelle(bm, 99999, 2024);
     birimBilgileriniYazdir(bm);

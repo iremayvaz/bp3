@@ -323,7 +323,7 @@ void diziyeAktar(int argc, char *argv[], birim ***yeniBirimListesi, calisan ***y
                 break;
             }
 
-            calisaniEkle(yeniCalisanListesi, newEmp);
+            //calisaniEkle(yeniCalisanListesi, newEmp);
 
             for (size_t i = 0; i < birimlerSize; i++) // birimler listesini geziyoruz
             {
